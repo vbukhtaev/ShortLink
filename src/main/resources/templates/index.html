@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Document</title>
+</head>
+
+<body>
+
+<form>
+    <input id="link" type="text">
+    <input onclick="create()" type="button" value="Сделать">
+</form>
+
+<p id="shortLink"></p>
+
+</body>
+<script>
+    async function create() {
+        let link = document.querySelector('#link').value;
+
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+
+        var raw = JSON.stringify({
+            "originalLink": link,
+            "shortLink": null
+        });
+
+        var requestOptions = {
+            method: 'POST',
+            headers: myHeaders,
+            body: raw,
+            redirect: 'follow'
+        };
+
+        fetch("http://localhost:8080/create", requestOptions)
+            .then(response => response.text())
+            .then(result => document.querySelector('#shortLink').innerHTML = result)
+            .catch(error => console.log('error', error));
+
+    }
+</script>
+
+
+</html>
